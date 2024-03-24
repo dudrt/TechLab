@@ -5,7 +5,7 @@ import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import db from "../firebase";
 
 export default function EventoSelecionado() {
-
+    // Teste de pr
     const { id } = useLocalSearchParams();
     const [infos, setInfos] = useState(null)
     useEffect(() => {
