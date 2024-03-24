@@ -26,7 +26,7 @@ const styles = new StyleSheet.create({
     },
     home:{
         width:"50%",
-        height:"65%"
+        height:"50%"
     }
 
 })
