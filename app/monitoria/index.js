@@ -1,41 +1,26 @@
-
-import { useEffect, useState } from "react"
-import { Text, View, Image, StyleSheet,TouchableOpacity, ScrollView,ActivityIndicator } from "react-native"
+import { View,Text,StyleSheet,ActivityIndicator,TouchableOpacity, ScrollView } from "react-native";
+import Navigation from "../navigation_menu";
+import { useEffect, useState } from "react";
 import db from "../firebase"
 import { StatusBar } from "expo-status-bar";
 import { collection, getDocs } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { router } from "expo-router";
-import Navigation from "../navigation_menu";
 
-export default function IndexEventos() {
+export default function Monitoria(){
+    const [monitorias, setMonitorias] = useState([])
 
-    const [viewEventos, setViewEventos] = useState([])
-
-    useEffect(() => {
-        setViewEventos([])
+    useEffect(()=>{
+        setMonitorias([])
         PegarInfos()
-        
-    }, []);
+    },[])
 
-
-    const PegarInfos = async () => {
-        setViewEventos([])
-        const querySnapshot = await getDocs(collection(db, "eventos"));
+    const PegarInfos = async () =>{
+        const querySnapshot = await getDocs(collection(db, "monitorias"));
         querySnapshot.forEach((doc) => {
             CriarViews(doc.data(),doc.id)
         });
+    }
 
-    }
-    const getImage = async (parametro) => {
-        try {
-            const storage = getStorage();
-            const url = await getDownloadURL(ref(storage, `imagens/${parametro}`));
-            return url;
-        } catch (error) {
-            return "erro";
-        }
-    }
     const CriarViews = async (dados,id) => {
         try {
             // let urlImagem = await getImage(dados.imagem);
@@ -44,37 +29,38 @@ export default function IndexEventos() {
             //     urlImagem = "../../img/fmp.png"
             // }
             
-            let array = viewEventos
+            let array = monitorias
             array.push(
-                <TouchableOpacity key={id} style={[styles.sub_menu, styles.sombra]} onPress={() => router.push({pathname:"eventos/event_selecionado",params:{id:id}})}>
-                    <Image style={styles.img_submenu} resizeMode="contain" source={require ("../../img/fmp.png")}></Image>
+                <TouchableOpacity key={id} style={[styles.sub_menu, styles.sombra]} onPress={() => router.push({pathname:"monitoria/monitoria_selecionada",params:{id:id}})}>
                     <Text style={styles.text_submenu}>{dados.nome}</Text>
                 </TouchableOpacity>
             )
-            setViewEventos([array])
+            setMonitorias([array])
         
         } catch (error) {
             console.error(error);
         }
     }
 
-
     return (
         <View style={styles.container}>
             <StatusBar style="dark" backgroundColor="#ECF5FF" />
-            <Text style={styles.titulo}>Eventos Acadêmicos</Text>
+            <Text style={styles.titulo}>Monitorias</Text>
             <ScrollView style={styles.scroll}>
-            {viewEventos.length == 0 ? (<ActivityIndicator style={{position:"absolute",alignSelf:"center",top:"50%"}} size="large" color="#2A72FD" />):
-            (
-                viewEventos.map((view,index)=>
-                    <View key={index}>{view}</View>
+            {monitorias.length == 0 ? (
+                <ActivityIndicator style={{position:"absolute",alignSelf:"center",top:"50%"}} size="large" color="#2A72FD" />
+                ):(
+                monitorias.map((view,index)=>
+                <View key={index}>{view}</View>
+                    )
                 )
-            )}  
+            }
             </ScrollView>
-            <Navigation/>
+        <Navigation/>
         </View>
     )
 }
+
 
 const styles = new StyleSheet.create({
     container:{
@@ -90,9 +76,6 @@ const styles = new StyleSheet.create({
         color: "#2A72FD",
         marginTop: "5%"
     },
-    img_submenu: {
-        width: "40%"
-    },
     sub_menu: {
         backgroundColor: "#FFF",
         alignSelf:"center",
@@ -100,15 +83,15 @@ const styles = new StyleSheet.create({
         justifyContent: "center",
         flexDirection: "row",
         borderRadius: 10,
-        marginTop:"5%", 
-        paddingHorizontal:10
-
+        marginBottom:"5%",
+        paddingHorizontal:10,
+        width:"90%"
     },
     text_submenu: {
         fontFamily: "Poppins-Bold",
         textAlign: "center",
-        width: "50%",
-        color: "#2A72FD"
+        color: "#2A72FD",
+        fontSize:22
     },
     sombra: {
         shadowColor: "#000",
