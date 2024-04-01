@@ -7,13 +7,12 @@ export default function Navigation(){
 
     return(
         <View style={styles.container}>
-            <TouchableOpacity style={styles.home} onPress={()=>router.replace("/")}>
+            <TouchableOpacity style={styles.home} onPress={()=>router.replace("/inicio")}>
                 <Image style={styles.img}  resizeMode="contain" source={require("../../img/home.png")}></Image>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.home} onPress={()=>router.replace("/")}>
+            <TouchableOpacity style={styles.home} onPress={()=>router.replace("/inicio")}>
                 <Image style={styles.img} resizeMode="contain" source={require("../../img/config.png")}></Image>            
             </TouchableOpacity>
-           
         </View>
     )
 }
