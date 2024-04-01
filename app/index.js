@@ -12,6 +12,7 @@ export default function index() {
     SplashScreen.preventAutoHideAsync();
 
     const [fontsLoaded, fontError] = useFonts({
+        'Poppins': require('../fonts/Poppins-Light.ttf'),
         'Poppins-Bold': require('../fonts/Poppins-Bold.ttf'),
         'Poppins-Extra-Bold': require('../fonts/Poppins-ExtraBold.ttf'),
     });
@@ -65,7 +66,7 @@ const styles = new StyleSheet.create({
         fontFamily: "Poppins-Extra-Bold",
         fontSize: 30,
         color: "#2A72FD",
-        margin: "17%"
+        margin: "10%"
     },
     sub_menu: {
         backgroundColor: "#FFF",

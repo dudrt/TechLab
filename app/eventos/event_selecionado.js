@@ -1,8 +1,10 @@
-import { View, Text, TouchableOpacity, Image } from "react-native"
-import { useNavigation, useRouter, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Image,StyleSheet,ActivityIndicator } from "react-native"
+import { StatusBar } from "expo-status-bar";
+import { useNavigation, useRouter, useLocalSearchParams,router } from "expo-router";
+import { createContext, useEffect, useState } from "react";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import db from "../firebase";
+import Navigation from "../navigation_menu";
 
 export default function EventoSelecionado() {
     // Teste de pr
@@ -21,21 +23,103 @@ export default function EventoSelecionado() {
     }
 
     return (
-        <View>
-            <TouchableOpacity>
-                <Text>Voltar</Text>
+        <View style={styles.container}>
+            <StatusBar style="dark" backgroundColor="#ECF5FF" />
+            <TouchableOpacity style={styles.back_btn} onPress={()=>router.replace("/eventos")}>
+                <Text style={styles.back_txt}>Voltar</Text>
             </TouchableOpacity>
-            {infos == null ? (<></>) : (
-                <View>
-                    <View>
-                        <Image source={require("../../img/fmp.png")}/>
-                        <Text>{infos.nome}</Text>
+            {infos == null ? (
+            <ActivityIndicator style={{position:"absolute",alignSelf:"center",top:"50%"}} size="large" color="#2A72FD" />) : 
+            (
+                <View style={styles.conteudo}>
+                    <View style={[styles.sub_menu,styles.sombra]}>
+                        <Image style={styles.img_submenu} resizeMode="contain" source={require ("../../img/fmp.png")}></Image>
+                        <Text style={styles.text_submenu}>{infos.nome}</Text>
                     </View>
-                    <View>
-                        <Text>{infos.descricao}</Text>
+                    <View style={[styles.desc_menu,styles.sombra]}>
+                        <Text style={styles.txt_desc_menu}>
+                            Horário{"\n"}{infos.horario}
+                        </Text>
+                        <Text style={styles.txt_desc_menu}>
+                            Duração{"\n"}{infos.duracao}h
+                        </Text>
+                        <Text style={styles.txt_desc_menu}>
+                            {infos.desc}
+                        </Text>
+                        <Text style={styles.txt_desc_menu}>
+                            {infos.obs}
+                        </Text>
+                        
                     </View>
                 </View>
             )}
+            <Navigation/>
         </View>
     )
 }
+
+const styles = new StyleSheet.create({
+    container:{
+        width:"100%",
+        height:"100%",
+        backgroundColor: "#ECF5FF",
+    },
+    conteudo:{
+        marginBottom:80,
+    },
+    text_submenu: {
+        fontFamily: "Poppins-Bold",
+        textAlign: "center",
+        width: "50%",
+        color: "#2A72FD"
+    },
+    img_submenu: {
+        width: "40%"
+    },
+    sub_menu: {
+        backgroundColor: "#FFF",
+        alignSelf:"center",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+        borderRadius: 10,
+        paddingHorizontal:10
+    },
+    desc_menu:{
+        width:"90%",
+        backgroundColor: "#FFF",
+        alignSelf:"center",
+        alignItems:"baseline",
+        flexDirection: "column",
+        borderRadius: 10,
+        marginTop:"5%", 
+        paddingHorizontal:10
+    },
+    sombra: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+        elevation: 9,
+    },
+    txt_desc_menu:{
+        fontFamily: "Poppins",
+        textAlign: "left",
+        fontSize:12,
+    },
+    back_btn:{
+        width:"20%",
+        margin:"4%",
+        backgroundColor:"#FFF",
+        alignItems:"center",
+        justifyContent:"center",
+        borderRadius:30
+    },
+    back_txt:{
+        fontFamily:"Poppins-Extra-Bold",
+        fontSize:18,
+    }
+})
