@@ -7,11 +7,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { router } from "expo-router";
 import Navigation from "../navigation_menu";
+import NovoEventoBTN from "../admin/evento/novo_evento_btn";
+
 
 export default function IndexEventos() {
 
     const [viewEventos, setViewEventos] = useState([])
-
+    const [telaAdmin,setTelaAdmin] = useState(true)
     useEffect(() => {
         setViewEventos([])
         PegarInfos()
@@ -63,6 +65,7 @@ export default function IndexEventos() {
         <View style={styles.container}>
             <StatusBar style="dark" backgroundColor="#ECF5FF" />
             <Text style={styles.titulo}>Eventos Acadêmicos</Text>
+            {telaAdmin?<NovoEventoBTN/>:<></>}
             <ScrollView style={styles.scroll}>
             {viewEventos.length == 0 ? (<ActivityIndicator style={{position:"absolute",alignSelf:"center",top:"50%"}} size="large" color="#2A72FD" />):
             (

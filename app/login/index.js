@@ -6,13 +6,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
 
-
     const setarLoginAluno = async () =>{
         try {
             const jsonValue = JSON.stringify("aluno");
             await AsyncStorage.setItem('login', jsonValue);
         } catch (e) {
-            
         }
     }
 

@@ -10,7 +10,7 @@ export default function Navigation(){
             <TouchableOpacity style={styles.home} onPress={()=>router.replace("/inicio")}>
                 <Image style={styles.img}  resizeMode="contain" source={require("../../img/home.png")}></Image>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.home} onPress={()=>router.replace("/inicio")}>
+            <TouchableOpacity style={styles.home} onPress={()=>router.replace("configs/")}>
                 <Image style={styles.img} resizeMode="contain" source={require("../../img/config.png")}></Image>            
             </TouchableOpacity>
         </View>

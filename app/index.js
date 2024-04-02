@@ -18,12 +18,9 @@ export default function Index() {
 
   const iniciar = async () => {
     const info = await getData()
-
     if (info == null) {
       router.replace("login/")
-    } else if (info == "admin") {
-      router.replace("admin/")
-    } else if (info == "aluno") {
+    } else if (info == "admin" || info == "aluno") {
       router.replace("inicio/")
     }
   }
