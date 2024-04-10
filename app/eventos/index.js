@@ -27,7 +27,6 @@ export default function IndexEventos() {
         querySnapshot.forEach((doc) => {
             CriarViews(doc.data(),doc.id)
         });
-
     }
     const getImage = async (parametro) => {
         try {
@@ -41,7 +40,7 @@ export default function IndexEventos() {
     const CriarViews = async (dados,id) => {
         try {
             // let urlImagem = await getImage(dados.imagem);
-            
+            // console.log(urlImagem)
             // if(urlImagem == "erro"){
             //     urlImagem = "../../img/fmp.png"
             // }
@@ -67,7 +66,7 @@ export default function IndexEventos() {
             <Text style={styles.titulo}>Eventos Acadêmicos</Text>
             {telaAdmin?<NovoEventoBTN/>:<></>}
             <ScrollView style={styles.scroll}>
-            {viewEventos.length == 0 ? (<ActivityIndicator style={{position:"absolute",alignSelf:"center",top:"50%"}} size="large" color="#2A72FD" />):
+            {viewEventos.length == 0 ? (<ActivityIndicator size="large" color="#2A72FD" />):
             (
                 viewEventos.map((view,index)=>
                     <View key={index}>{view}</View>
