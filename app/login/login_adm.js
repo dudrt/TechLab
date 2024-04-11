@@ -2,6 +2,7 @@ import { View, StyleSheet, TextInput, Text, TouchableOpacity,Alert } from "react
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { router } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -13,7 +14,6 @@ export default function LoginAdm() {
 
     const storeData = async (value) => {
         try {
-            const jsonValue = JSON.stringify(value);
             await AsyncStorage.setItem('login', jsonValue);
         } catch (e) {
             
@@ -24,7 +24,7 @@ export default function LoginAdm() {
         if(login == "admin" && senha == "Du_dudu&3du"){
             storeData("admin")
             Alert.alert('Login realizado com sucesso!');
-            router.replace()
+            router.replace("/inicio")
         }else{
             Alert.alert('Informações inválidas!');
         }

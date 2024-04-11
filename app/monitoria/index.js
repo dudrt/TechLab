@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import db from "../firebase"
 import { StatusBar } from "expo-status-bar";
 import { collection, getDocs } from "firebase/firestore";
-import { router } from "expo-router";
+import { router ,useLocalSearchParams} from "expo-router";
 
 export default function Monitoria(){
     const [monitorias, setMonitorias] = useState([])
+    const { admin } = useLocalSearchParams();
+    const [telaAdmin,setTelaAdmin] = useState(admin)
 
     useEffect(()=>{
         setMonitorias([])

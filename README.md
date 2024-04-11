@@ -9,3 +9,4 @@ Trabalho da faculdade utilizando React Native e Firebase.
 - Fazer botão para adicionar monitoria  
 - Fazer tela de de adicionar monitoria.
 - Fazer opção de excluir `monitoria` caso o login seja `admin`
+- Arrumar espaço a mais no começo das horas inicio e fim dos `eventos`.

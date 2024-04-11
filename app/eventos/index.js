@@ -1,27 +1,30 @@
-
 import { useEffect, useState } from "react"
 import { Text, View, Image, StyleSheet,TouchableOpacity, ScrollView,ActivityIndicator } from "react-native"
 import db from "../firebase"
 import { StatusBar } from "expo-status-bar";
 import { collection, getDocs } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { router } from "expo-router";
+import { router ,useLocalSearchParams} from "expo-router";
 import Navigation from "../navigation_menu";
 import NovoEventoBTN from "../admin/evento/novo_evento_btn";
 
-
 export default function IndexEventos() {
-
     const [viewEventos, setViewEventos] = useState([])
-    const [telaAdmin,setTelaAdmin] = useState(true)
+    const { admin } = useLocalSearchParams();
+    const [telaAdmin,setTelaAdmin] = useState()
+
     useEffect(() => {
         setViewEventos([])
-        PegarInfos()
-        
+        pegarInfos()
+        if(admin == true){
+            setTelaAdmin(true)
+        }else{
+            setTelaAdmin(false)
+        }
     }, []);
 
 
-    const PegarInfos = async () => {
+    const pegarInfos = async () => {
         setViewEventos([])
         const querySnapshot = await getDocs(collection(db, "eventos"));
         querySnapshot.forEach((doc) => {
@@ -50,6 +53,12 @@ export default function IndexEventos() {
                 <TouchableOpacity key={id} style={[styles.sub_menu, styles.sombra]} onPress={() => router.push({pathname:"eventos/event_selecionado",params:{id:id}})}>
                     <Image style={styles.img_submenu} resizeMode="contain" source={require ("../../img/fmp.png")}></Image>
                     <Text style={styles.text_submenu}>{dados.nome}</Text>
+                    {telaAdmin?(<View>
+                        <TouchableOpacity>
+                            <Image style={{width:20}} resizeMode="contain" source={require("../../img/remove.png")}/>
+                        </TouchableOpacity>
+                    </View>):
+                    <></>}
                 </TouchableOpacity>
             )
             setViewEventos([array])
@@ -58,6 +67,8 @@ export default function IndexEventos() {
             console.error(error);
         }
     }
+
+    
 
 
     return (
@@ -103,7 +114,8 @@ const styles = new StyleSheet.create({
         flexDirection: "row",
         borderRadius: 10,
         marginTop:"5%", 
-        paddingHorizontal:10
+        paddingHorizontal:10,
+        marginBottom:"2%"
 
     },
     text_submenu: {

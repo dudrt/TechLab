@@ -1,16 +1,32 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native"
 import { Link, router } from 'expo-router';
-
-
+import { useState, useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from "expo-status-bar";
 import Navigation from "./navigation_menu";
 
 
 export default function Inicio() {
-
+    const [telaAdmin,setTelaAdmin] = useState(true)
    
+    useEffect(() => {
+        verificarLogin()
 
-    
+    }, []);
+    const verificarLogin = async()=>{
+        try {
+            const login = await AsyncStorage.getItem('login');
+            if(login == "admin"){
+                setTelaAdmin(true)
+            }else{
+                setTelaAdmin(false)
+            }
+          } catch (e) {
+            router.replace("/")
+          }
+
+
+    }
 
 
     return (
@@ -18,15 +34,15 @@ export default function Inicio() {
             <StatusBar style="dark" backgroundColor="#ECF5FF" />
             <Text style={styles.titulo}>TECHLAB</Text>
 
-            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push("/monitoria")}>
+            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push({pathname:"/monitoria", params:{admin:telaAdmin}})}>
                 <Image style={styles.img_submenu} resizeMode="contain" source={require('../img/monitoria.png')}></Image>
                 <Text style={styles.text_submenu}>Monitorias</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push("/reserva_laboratorio")}>
+            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push({pathname:"/reserva_laboratorio", params:{admin:telaAdmin}})}>
                     <Image style={styles.img_submenu} resizeMode="contain" source={require('../img/reserva.png')}></Image>
                     <Text style={styles.text_submenu}>Reserva de{"\n"}laboratórios</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push("/eventos")}>
+            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push({pathname:"/eventos", params:{admin:telaAdmin}})}>
                     <Image style={styles.img_submenu} resizeMode="contain" source={require('../img/eventos.png')}></Image>
                     <Text style={styles.text_submenu}>Eventos {"\n"} Acadêmicos</Text>
             </TouchableOpacity>

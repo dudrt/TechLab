@@ -9,8 +9,7 @@ import { useCallback } from "react";
 export default function Index() {
   const getData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('login');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
+      return jsonValue = await AsyncStorage.getItem('login');
     } catch (e) {
       // error reading value
     }

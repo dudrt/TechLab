@@ -8,8 +8,7 @@ export default function Login() {
 
     const setarLoginAluno = async () =>{
         try {
-            const jsonValue = JSON.stringify("aluno");
-            await AsyncStorage.setItem('login', jsonValue);
+            await AsyncStorage.setItem('login', "aluno");
         } catch (e) {
         }
     }
