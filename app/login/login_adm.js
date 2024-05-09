@@ -14,14 +14,14 @@ export default function LoginAdm() {
 
     const storeData = async (value) => {
         try {
-            await AsyncStorage.setItem('login', jsonValue);
+            await AsyncStorage.setItem('login', value);
         } catch (e) {
             
         }
     };
 
     const confirmarLogin = async () =>{
-        if(login == "admin" && senha == "Du_dudu&3du"){
+        if(login == "admin" && senha == "admin"){
             storeData("admin")
             Alert.alert('Login realizado com sucesso!');
             router.replace("/inicio")

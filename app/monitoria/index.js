@@ -5,18 +5,29 @@ import db from "../firebase"
 import { StatusBar } from "expo-status-bar";
 import { collection, getDocs } from "firebase/firestore";
 import { router ,useLocalSearchParams} from "expo-router";
+import GetTipoSession from "../global/global_functions";
+import NovaMonitoriaBtn from "../admin/monitoria/nova_monitoria_btn";
 
 export default function Monitoria(){
     const [monitorias, setMonitorias] = useState([])
     const { admin } = useLocalSearchParams();
     const [telaAdmin,setTelaAdmin] = useState(admin)
-
+    
     useEffect(()=>{
         setMonitorias([])
         PegarInfos()
     },[])
 
     const PegarInfos = async () =>{
+        const admin = await GetTipoSession();
+
+        if(admin == true){
+            setTelaAdmin(true)
+        }else{
+            setTelaAdmin(false)
+        }
+
+
         const querySnapshot = await getDocs(collection(db, "monitorias"));
         querySnapshot.forEach((doc) => {
             CriarViews(doc.data(),doc.id)
@@ -48,9 +59,10 @@ export default function Monitoria(){
         <View style={styles.container}>
             <StatusBar style="dark" backgroundColor="#ECF5FF" />
             <Text style={styles.titulo}>Monitorias</Text>
+            {telaAdmin?<NovaMonitoriaBtn/>:<></>}
             <ScrollView style={styles.scroll}>
-            {monitorias.length == 0 ? (
-                <ActivityIndicator style={{position:"absolute",alignSelf:"center",top:"50%"}} size="large" color="#2A72FD" />
+            {monitorias == 0 ? (
+                <ActivityIndicator style={{alignSelf:"center"}} size="large" color="#2A72FD" />
                 ):(
                 monitorias.map((view,index)=>
                 <View key={index}>{view}</View>

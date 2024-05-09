@@ -4,7 +4,7 @@ import Navigation from "../navigation_menu";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as Updates from 'expo-updates';
 
 export default function Configs(){
 
@@ -13,7 +13,12 @@ export default function Configs(){
 
     const desconectar = async () =>{
         await AsyncStorage.removeItem('login');
-        router.replace("/")
+        try {      
+              await Updates.reloadAsync();
+            
+          } catch (error) {
+            alert(`Error fetching latest Expo update: ${error}`);
+          }
     }
 
     return(
