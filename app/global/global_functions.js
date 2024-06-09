@@ -4,4 +4,5 @@ export default async function GetTipoSession(){
 
     const login = await AsyncStorage.getItem('login');
     return login == "admin" ? true : false
+    
 }
