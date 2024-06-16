@@ -1,14 +1,10 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native"
+import { Text, View, StyleSheet, ToastAndroid,Image, TouchableOpacity } from "react-native"
 import { Link, router } from 'expo-router';
-import { useState, useEffect } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from "expo-status-bar";
 import Navigation from "./navigation_menu";
 
 
 export default function Inicio() {
-
-
 
 
     return (
@@ -20,7 +16,11 @@ export default function Inicio() {
                 <Image style={styles.img_submenu} resizeMode="contain" source={require('../img/monitoria.png')}></Image>
                 <Text style={styles.text_submenu}>Monitorias</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => router.push("/reserva_laboratorio")}>
+            <TouchableOpacity style={[styles.sub_menu, styles.sombra]} onPress={() => ToastAndroid.showWithGravity(
+                `Funcionalidade em Desenvolvimento!`,
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+              )}>
                     <Image style={styles.img_submenu} resizeMode="contain" source={require('../img/reserva.png')}></Image>
                     <Text style={styles.text_submenu}>Reserva de{"\n"}laboratórios</Text>
             </TouchableOpacity>

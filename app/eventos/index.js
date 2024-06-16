@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, View, Image,ToastAndroid, StyleSheet,TouchableOpacity, ScrollView,ActivityIndicator } from "react-native"
+import { Text, View, Image,ToastAndroid,Modal, StyleSheet,TouchableOpacity, ScrollView,ActivityIndicator } from "react-native"
 import db from "../firebase"
 import { StatusBar } from "expo-status-bar";
 import { collection, getDocs ,deleteDoc, doc} from "firebase/firestore";
@@ -13,6 +13,8 @@ export default function IndexEventos() {
     const [viewEventos, setViewEventos] = useState([])
     const [telaAdmin,setTelaAdmin] = useState(false)
 
+    const [viewModalExcluir, setViewModalExcluir] = useState()
+    const [modalVisivel,setModalVisivel] = useState(false)
     useEffect(() => {
         setViewEventos([])
         pegarInfos()
@@ -22,16 +24,26 @@ export default function IndexEventos() {
     const pegarInfos = async () => {
         const admin = await GetTipoSession();
 
-        if(admin == true){
-            setTelaAdmin(true)
-        }else{
-            setTelaAdmin(false)
-        }
+        setTelaAdmin(admin)
+        
+
+
+
+        let eventos = false 
         setViewEventos([])
         const querySnapshot = await getDocs(collection(db, "eventos"));
         querySnapshot.forEach((doc) => {
+            eventos = true
             CriarViews(doc.data(),doc.id)
         });
+
+        if(!eventos){
+            setViewEventos([(
+                <View style={[styles.sub_menu, styles.sombra]}>
+                    <Text style={styles.text_submenu}>Nenhum evento cadastrado no momento.</Text>
+                </View>
+            )])
+        }
     }
     const getImage = async (parametro) => {
         try {
@@ -56,9 +68,26 @@ export default function IndexEventos() {
         }catch(e){
             console.log(e)
         }
-
     } 
 
+    const abrirModalExcluir = async (id,nomeEvento) =>{
+        setModalVisivel(true)
+        setViewModalExcluir(
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
+                    <View style={styles.view_modal}>
+                        <Text style={styles.desconect_modal_text}>Você tem certeza que deseja excluir o evento {nomeEvento} ?</Text>
+                        <View style={{ flexDirection: "row" }}>
+                            <TouchableOpacity style={[styles.modal_button_desconect,styles.sombra]} onPress={() => {deleteEvento(id);setModalVisivel(false)}}>
+                                <Text style={styles.text_button_modal_desconect}>OK</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal_button_desconect,styles.sombra]} onPress={() => {setModalVisivel(false)}}>
+                                <Text style={[styles.text_button_modal_desconect,{color:"#DD5F5F"}]}>CANCELAR</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+        )
+    }
 
 
     
@@ -70,7 +99,7 @@ export default function IndexEventos() {
                     <Image style={styles.img_submenu} resizeMode="contain" source={require ("../../img/fmp.png")}></Image>
                     <Text style={styles.text_submenu}>{dados.nome}</Text>
                     <Text style={styles.data_submenu}>{dados.data_evento}</Text>
-                    <TouchableOpacity onPress={()=>deleteEvento(id)} style={styles.remove_btn}>
+                    <TouchableOpacity onPress={()=>abrirModalExcluir(id)} style={styles.remove_btn}>
                         <Image style={styles.img_remove} resizeMode="cover" resizeMethod="scale" source={require ("../../img/remove.png")}/>
                     </TouchableOpacity>
                     
@@ -82,9 +111,6 @@ export default function IndexEventos() {
             console.error(error);
         }
     }
-
-    
-
 
     return (
         <View style={styles.container}>
@@ -100,6 +126,15 @@ export default function IndexEventos() {
             )}  
             </ScrollView>
             <Navigation/>
+            <Modal
+                style={styles.modal}
+                animationType="slide"
+                
+                visible={modalVisivel}
+                
+            >
+                {viewModalExcluir}
+            </Modal>
         </View>
     )
 }
@@ -173,5 +208,45 @@ const styles = new StyleSheet.create({
     img_remove:{
         height:30,
         width:30
+    },
+
+
+
+
+
+
+
+    modal: {
+        flex:1,
+    },
+    view_modal: {
+        backgroundColor: "#ECF5FF",
+        width: "100%",
+        height: "100%",
+        alignSelf: "center",
+        alignItems: 'center',
+        justifyContent:"center",
+        marginHorizontal: "auto",
+        marginVertical: "auto",
+        borderRadius: 40
+    },
+    modal_button_desconect: {
+        width:"40%",
+        padding: 8,
+        backgroundColor: "#FFF",
+        margin: 10,
+        borderRadius: 30
+    },
+    text_button_modal_desconect: {
+        fontSize:22,
+        fontFamily: "Poppins-Bold",
+        textAlign: "center",
+        color: "#2A72FD"
+    },
+    desconect_modal_text:{
+        fontSize:22,
+        fontFamily: "Poppins-Bold",
+        textAlign: "center",
+        color: "#2A72FD"
     }
 })

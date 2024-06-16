@@ -35,22 +35,35 @@ export default function MonitoriaSelecionada() {
                 <ActivityIndicator style={{ position: "absolute", alignSelf: "center", top: "50%" }} size="large" color="#2A72FD" />
             ) : (
                 <ScrollView style={[styles.sub_menu, styles.sombra]}>
-                    <Text style={styles.titulo}>{infos.nome}</Text>
-                    <Text style={styles.submenu_txt}>
-                        {infos.desc}
-                    </Text>
-                    <Text style={styles.submenu_txt}>
-                        <Text style={{ fontFamily: "Poppins-Bold" }}>Local:</Text>{"\n"}{infos.local}h
-                    </Text>
-                    <Text style={styles.submenu_txt}>
-                        <Text style={{ fontFamily: "Poppins-Bold" }}>Horario:</Text>{"\n"}{infos.horario}
-                    </Text>
-                    <Text style={styles.submenu_txt}>
-                        <Text style={{ fontFamily: "Poppins-Bold" }}>Dia(s):</Text>{"\n"}{infos.dia}
-                    </Text>
-                    <Text style={styles.submenu_txt}>
-                        <Text style={{ fontFamily: "Poppins-Bold" }}>Monitor(es):</Text>{"\n"}{infos.monitores}
-                    </Text>
+                    <View >
+                        <Text style={styles.titulo}>{infos.nome}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.desc_txt}>   {infos.descricao}</Text>
+                    </View>
+                    <View>
+                        <Text style={[styles.submenu_txt,{ fontFamily: "Poppins-Bold" }]}>Horário:</Text>
+                        <Text style={[styles.submenu_txt,{marginBottom:0}]}>Início:{infos.inicio_hora}</Text>
+                        <Text style={styles.submenu_txt}>Fim:{infos.fim_hora}</Text>
+                    </View>
+                    <View>
+                        <Text style={[styles.submenu_txt,{ fontFamily: "Poppins-Bold" }]}>Local:</Text>
+                        <Text style={styles.submenu_txt}>{infos.local}</Text>
+                    </View>
+                    <View style={{marginBottom:"5%"}}>
+                        <Text style={[styles.submenu_txt,{ fontFamily: "Poppins-Bold" }]}>Dia(s):</Text>
+                        {infos.dias.map((view,index)=>
+                            <View key={index}><Text style={styles.nome_monitor}>{view}</Text></View>
+                        )}
+                    </View>
+                    <View style={{marginBottom:"5%"}}>
+                        <Text style={[styles.submenu_txt,{ fontFamily: "Poppins-Bold" }]}>Monitor(es):</Text>
+                        {infos.monitores.map((view,index)=>
+                            <View key={index}>
+                                <Text style={styles.nome_monitor}>{view}</Text>
+                            </View>
+                        )}
+                    </View>
                 </ScrollView>
             )}
             <Navigation />
@@ -98,13 +111,20 @@ const styles = new StyleSheet.create({
         fontFamily: "Poppins-Extra-Bold",
         fontSize: 30,
         color: "#2A72FD",
-        marginTop: "5%"
+        marginTop: "5%",
+        textAlign:"center"
     },
     submenu_txt: {
         marginBottom: "5%",
         fontFamily: "Poppins",
         fontSize: 18,
         textAlign: "left"
+    },
+    desc_txt:{
+        marginBottom: "5%",
+        fontFamily: "Poppins",
+        fontSize: 18,
+        textAlign: "justify"
     },
     back_btn: {
         width: "20%",
@@ -118,5 +138,9 @@ const styles = new StyleSheet.create({
     back_txt: {
         fontFamily: "Poppins-Extra-Bold",
         fontSize: 18,
+    },
+    nome_monitor:{
+        fontFamily: "Poppins",
+        fontSize: 16,
     }
 })

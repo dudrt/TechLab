@@ -23,11 +23,11 @@ export default function CadastrarEvento() {
 
     const [modalVisivel,setModalVisivel] = useState(false)
     const mudarData = async (data) => {
-
         data = String(data.toLocaleString())
-        let dataArray = data.split(",")[0].split("/")
+        let dataArray = data.split(",")[0]
+        setDateArrumado(dataArray)
 
-        setDateArrumado(`${dataArray[1]}/${dataArray[0]}/${dataArray[2]}`)
+        // setDateArrumado(`${dataArray[1]}/${dataArray[0]}/${dataArray[2]}`)
     }
 
     const confirmarDados = async () => {
@@ -37,10 +37,18 @@ export default function CadastrarEvento() {
             return false
         }
 
+        const inicioEventoTemp = String(timeInicio.toLocaleString()).length == 21? 
+        (String(timeInicio.toLocaleString()).split(",")[1].slice(0, -6)+" "+
+        String(timeInicio.toLocaleString()).split(",")[1].slice(-2)):
+        String(timeInicio.toLocaleString()).split(",")[1].slice(0, -6)+":"+
+        String(timeInicio.toLocaleString()).split(",")[1].slice(-5,-3)
+        
 
-        const inicioEventoTemp =  String(timeInicio.toLocaleString()).split(",")[1].slice(0, -6) +   String(timeInicio.toLocaleString()).split(",")[1].slice(-2)
-        const fimEventoTemp =  String(timeFim.toLocaleString()).split(",")[1].slice(0, -6) +   String(timeFim.toLocaleString()).split(",")[1].slice(-2)
-
+        const fimEventoTemp = String(timeFim.toLocaleString()).length == 21? 
+        (String(timeFim.toLocaleString()).split(",")[1].slice(0, -6)+" "+
+        String(timeFim.toLocaleString()).split(",")[1].slice(-2)):
+        String(timeFim.toLocaleString()).split(",")[1].slice(0, -6)+":"+
+        String(timeFim.toLocaleString()).split(",")[1].slice(-5,-3)
 
         addDoc(collection(db, "eventos"), {
             nome:nomeEvent,
@@ -52,11 +60,6 @@ export default function CadastrarEvento() {
         })
         setModalVisivel(true)
     }
-
-
-
-
-
 
     return (
         <View style={styles.container}>
@@ -131,15 +134,23 @@ export default function CadastrarEvento() {
                 <View style={styles.time_view}>
                         <TouchableOpacity style={[styles.time_btn, styles.sombra]} onPress={() => setOpenTimeInicio(true)}>
                             <Text style={styles.time_btn_txt}>
-                                {String(timeInicio.toLocaleString()).split(",")[1].slice(0, -6)}
-                                {String(timeInicio.toLocaleString()).split(",")[1].slice(-2)}
+                            {String(timeInicio.toLocaleString()).length == 21? 
+                            (String(timeInicio.toLocaleString()).split(",")[1].slice(0, -6)+" "+
+                            String(timeInicio.toLocaleString()).split(",")[1].slice(-2)):
+                            String(timeInicio.toLocaleString()).split(",")[1].slice(0, -6)+":"+
+                            String(timeInicio.toLocaleString()).split(",")[1].slice(-5,-3)
+                            }
                             </Text>
                         </TouchableOpacity>
                         <Text style={styles.time_txt}>-</Text>
                         <TouchableOpacity style={[styles.time_btn, styles.sombra]} onPress={() => setOpenTimeFim(true)}>
                             <Text style={styles.time_btn_txt}>
-                                {String(timeFim.toLocaleString()).split(",")[1].slice(0, -6)}
-                                {String(timeFim.toLocaleString()).split(",")[1].slice(-2)}
+                            {String(timeFim.toLocaleString()).length == 21? 
+                            (String(timeFim.toLocaleString()).split(",")[1].slice(0, -6)+" "+
+                            String(timeFim.toLocaleString()).split(",")[1].slice(-2)):
+                            String(timeFim.toLocaleString()).split(",")[1].slice(0, -6)+":"+
+                            String(timeFim.toLocaleString()).split(",")[1].slice(-5,-3)
+                            }
                             </Text>
                         </TouchableOpacity>
                 </View>
@@ -149,12 +160,12 @@ export default function CadastrarEvento() {
                         testID="dateTimePicker"
                         value={timeInicio}
                         mode="time"
-                        display="spinner"
+                        display="default"
                         themeVariant="dark"
                         onChange={(evt, selectedDate) => {
                             if (evt.type == "set") {
-                                setTimeInicio(selectedDate)
                                 setOpenTimeInicio(false)
+                                setTimeInicio(selectedDate)
                             } else {
                                 setOpenTimeInicio(false)
                             }
@@ -167,7 +178,7 @@ export default function CadastrarEvento() {
                         testID="dateTimePicker"
                         value={timeFim}
                         mode="time"
-                        display="spinner"
+                        display="default"
                         themeVariant="dark"
                         onChange={(evt, selectedDate) => {
                             if (evt.type == "set") {

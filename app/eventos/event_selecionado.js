@@ -58,7 +58,7 @@ export default function EventoSelecionado() {
                             <Text>
                                 Sobre
                             </Text>
-                            <Text style={[styles.txt_desc_menu,{marginBottom:"2%"}]} >
+                            <Text style={[styles.txt_desc_menu,{marginBottom:"2%"}]}>
                                 {infos.descricao}
                             </Text>
                         </View>
