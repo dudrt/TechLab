@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.durt.TechLab"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,7 +31,14 @@
     "plugins": [
       "expo-router",
       "expo-font"
-
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2ebbdd55-c02f-436e-8a17-66a5d7df6f8d"
+      }
+    }
   }
 }
